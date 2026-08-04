@@ -450,11 +450,19 @@
   font-weight: 600;
   padding: 13px;
   border-radius: var(--radius-sm);
-  background: #FFF0F0;
+  background: rgba(201, 64, 64, 0.08);
   width: 100%;
   transition: background 0.15s;
 }
 
 .detail__delete:active {
-  background: #FFE0E0;
+  background: rgba(201, 64, 64, 0.16);
+}
+
+[data-theme="dark"] .detail__delete {
+  background: rgba(201, 64, 64, 0.2);
+}
+
+[data-theme="dark"] .detail__delete:active {
+  background: rgba(201, 64, 64, 0.3);
 }

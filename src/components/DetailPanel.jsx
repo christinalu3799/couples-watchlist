@@ -285,6 +285,7 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
           </section>
 
           <button
+            className="detail__delete"
             onClick={() => {
               if (window.confirm(`Remove "${item.title}" from your watchlist?`)) {
                 onDelete();
