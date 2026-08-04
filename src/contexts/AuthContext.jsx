@@ -24,7 +24,6 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     return onAuthStateChanged(auth, async (firebaseUser) => {
       if (!firebaseUser) {
-        console.log('[Auth] onAuthStateChanged: null user');
         setUser(null);
         setUserProfile(null);
         setIsNewUser(false);
@@ -33,8 +32,6 @@ export function AuthProvider({ children }) {
       }
 
       const email = (firebaseUser.email ?? '').toLowerCase();
-      console.log('[Auth] signed-in email:', JSON.stringify(email));
-      console.log('[Auth] allowed emails:', JSON.stringify(ALLOWED_EMAILS));
       if (!ALLOWED_EMAILS.includes(email)) {
         await firebaseSignOut(auth);
         setAuthError("This account doesn't have access. Try a different Google account.");
