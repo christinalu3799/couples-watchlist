@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useWatchlist } from '../hooks/useWatchlist';
 import FilterBar from '../components/FilterBar';
 import WatchlistCard from '../components/WatchlistCard';
@@ -17,6 +17,14 @@ export default function Home() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
+  // Keep selectedItem in sync with live Firestore data
+  useEffect(() => {
+    if (selectedItem) {
+      const updated = items.find((i) => i.id === selectedItem.id);
+      if (updated) setSelectedItem(updated);
+    }
+  }, [items]);
+
   const filtered = items.filter((item) => {
     if (statusFilter !== 'all' && item.status !== statusFilter) return false;
     if (personFilter !== 'all' && item.addedBy !== personFilter) return false;
@@ -32,7 +40,7 @@ export default function Home() {
           className="home__search-btn"
           onClick={() => setSearchOpen(true)}
           aria-label="Search to add"
-        >a
+        >
           <svg
             width="22"
             height="22"

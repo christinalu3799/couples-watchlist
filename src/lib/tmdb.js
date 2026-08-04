@@ -25,3 +25,12 @@ export function getPosterUrl(path) {
   if (!path) return null;
   return `${IMAGE_BASE}${path}`;
 }
+
+export async function getDetails(tmdbId, mediaType) {
+  const res = await fetch(
+    `${BASE_URL}/${mediaType}/${tmdbId}?append_to_response=credits`,
+    { headers }
+  );
+  if (!res.ok) throw new Error('TMDB details failed');
+  return res.json();
+}

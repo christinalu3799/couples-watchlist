@@ -9,6 +9,7 @@ import {
   serverTimestamp,
   query,
   orderBy,
+  arrayUnion,
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
