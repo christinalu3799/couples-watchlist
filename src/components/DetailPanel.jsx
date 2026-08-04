@@ -4,11 +4,12 @@ import { getPosterUrl, getDetails } from '../lib/tmdb';
 import { useAuth } from '../contexts/AuthContext';
 import './DetailPanel.css';
 
-function formatDate(iso) {
+function formatDate(iso, includeTime = true) {
   if (!iso) return '';
   const d = new Date(iso);
   return (
-    d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
+    (includeTime ? ' at ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '')
   );
 }
 
@@ -291,13 +292,13 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
                   />
                   <span>Watched together</span>
                 </label>
-                <input
-                  className="detail__watch-date-input"
-                  type="date"
-                  value={watchDate}
-                  onChange={(e) => setWatchDate(e.target.value)}
-                  aria-label="Watch date"
-                />
+              <input
+                className="detail__watch-date-input"
+                type="date"
+                value={watchDate}
+                onChange={(e) => setWatchDate(e.target.value)}
+                aria-label="Watch date"
+              />
               </div>
               <button className="detail__note-post" onClick={handleLogWatch}>
                 Log watch
