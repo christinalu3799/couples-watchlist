@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import { arrayUnion, arrayRemove } from 'firebase/firestore';
 import { getPosterUrl, getDetails } from '../lib/tmdb';
+import { useAuth } from '../contexts/AuthContext';
 import './DetailPanel.css';
-
-const NAME_1 = import.meta.env.VITE_NAME_1;
-const NAME_2 = import.meta.env.VITE_NAME_2;
 
 function formatDate(iso) {
   if (!iso) return '';
@@ -22,15 +20,16 @@ const STATUSES = [
   { value: 'watched', label: 'Watched ✓' },
 ];
 
-export default function DetailPanel({ item, onClose, onUpdate, onDelete }) {
+export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, name2 }) {
+  const { userProfile } = useAuth();
   const [status, setStatus] = useState(item.status);
   const [season, setSeason] = useState(item.currentSeason ?? 1);
   const [episode, setEpisode] = useState(item.currentEpisode ?? 1);
   const [rating1, setRating1] = useState(item.rating1 ?? 0);
   const [rating2, setRating2] = useState(item.rating2 ?? 0);
   const [notes, setNotes] = useState('');
-  const [notedBy, setNotedBy] = useState(item.addedBy);
-  const [watchedBy, setWatchedBy] = useState(NAME_1);
+  const [notedBy, setNotedBy] = useState(userProfile?.displayName ?? name1);
+  const [watchedBy, setWatchedBy] = useState(userProfile?.displayName ?? name1);
   const [tmdbDetails, setTmdbDetails] = useState(null);
 
   useEffect(() => {
@@ -181,7 +180,7 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete }) {
           <section className="detail__section">
             <p className="detail__section-label">Ratings</p>
             <div className="detail__rating-row">
-              <span className="detail__rating-name">{NAME_1}</span>
+              <span className="detail__rating-name">{name1}</span>
               <div className="detail__stars">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -196,7 +195,7 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete }) {
               </div>
             </div>
             <div className="detail__rating-row">
-              <span className="detail__rating-name">{NAME_2}</span>
+              <span className="detail__rating-name">{name2}</span>
               <div className="detail__stars">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -218,8 +217,19 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete }) {
               <div className="detail__note-log">
                 {item.noteLog.map((entry, i) => (
                   <div key={i} className="detail__note-entry">
-                    <p className="detail__note-meta">{entry.by} · {formatDate(entry.at)}</p>
-                    <p className="detail__note-text">{entry.text}</p>
+                    <div>
+                      <p className="detail__note-meta">{entry.by} · {formatDate(entry.at)}</p>
+                      <p className="detail__note-text">{entry.text}</p>
+                    </div>
+                    <button
+                      className="detail__watch-delete"
+                      onClick={() => {
+                        if (window.confirm('Delete this comment?')) {
+                          onUpdate({ noteLog: arrayRemove(entry) });
+                        }
+                      }}
+                      aria-label="Delete comment"
+                    >×</button>
                   </div>
                 ))}
               </div>
@@ -234,7 +244,7 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete }) {
             <div className="detail__note-footer">
               <div className="detail__rated-by">
                 <span className="detail__rated-by-label">Comment by</span>
-                {[NAME_1, NAME_2].map((name) => (
+                {[name1, name2].map((name) => (
                   <button
                     key={name}
                     className={`detail__rated-by-pill ${notedBy === name ? 'detail__rated-by-pill--active' : ''}`}
@@ -277,7 +287,7 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete }) {
             )}
             <div className="detail__watch-footer">
               <div className="detail__rated-by">
-                {[NAME_1, NAME_2, 'Both 🎬'].map((name) => (
+                {[name1, name2, 'Both 🎬'].map((name) => (
                   <button
                     key={name}
                     className={`detail__rated-by-pill ${watchedBy === name ? 'detail__rated-by-pill--active' : ''}`}

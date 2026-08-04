@@ -42,6 +42,27 @@
   background: var(--surface-2);
 }
 
+.home__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.home__signout-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--text-muted, #888);
+  transition: background 0.15s;
+}
+
+.home__signout-btn:active {
+  background: var(--surface-2);
+}
+
 .home__grid-wrapper {
   flex: 1;
   padding: 12px;

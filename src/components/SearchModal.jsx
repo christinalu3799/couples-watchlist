@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTMDB } from '../hooks/useTMDB';
 import { getPosterUrl } from '../lib/tmdb';
+import { useAuth } from '../contexts/AuthContext';
 import './SearchModal.css';
 
 export default function SearchModal({ onClose, onAdd, name1, name2, existingIds }) {
+  const { userProfile } = useAuth();
   const { query, setQuery, results, loading } = useTMDB();
-  const [addedBy, setAddedBy] = useState(name1);
+  const [addedBy, setAddedBy] = useState(userProfile?.displayName ?? name1);
   const [addingId, setAddingId] = useState(null);
   const inputRef = useRef(null);
 
