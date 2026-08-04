@@ -9,9 +9,9 @@ import {
   serverTimestamp,
   query,
   orderBy,
-  arrayUnion,
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import { deriveOverallStatus } from '../lib/status';
 
 const COLLECTION = 'watchlist';
 
@@ -29,8 +29,14 @@ export function useWatchlist() {
   }, []);
 
   async function addItem(item) {
+    const status1 = item.status1 ?? item.status ?? 'want_to_watch';
+    const status2 = item.status2 ?? item.status ?? 'want_to_watch';
+
     await addDoc(collection(db, COLLECTION), {
       ...item,
+      status1,
+      status2,
+      status: deriveOverallStatus(status1, status2),
       addedAt: serverTimestamp(),
       watchedAt: null,
     });
@@ -38,6 +44,16 @@ export function useWatchlist() {
 
   async function updateItem(id, updates) {
     const ref = doc(db, COLLECTION, id);
+
+    if (updates.status1 !== undefined || updates.status2 !== undefined) {
+      const nextStatus1 = updates.status1 ?? updates.status2;
+      const nextStatus2 = updates.status2 ?? updates.status1;
+      updates = {
+        ...updates,
+        status: deriveOverallStatus(nextStatus1, nextStatus2),
+      };
+    }
+
     if (updates.status === 'watched') {
       updates = { ...updates, watchedAt: serverTimestamp() };
     }

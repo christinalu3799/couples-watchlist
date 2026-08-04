@@ -12,7 +12,7 @@ import './Home.css';
 const FALLBACK_1 = import.meta.env.VITE_NAME_1;
 const FALLBACK_2 = import.meta.env.VITE_NAME_2;
 
-export default function Home() {
+export default function Home({ onOpenTimeline }) {
   const { signOut } = useAuth();
   const { items, loading, addItem, updateItem, deleteItem } = useWatchlist();
   const [allUsers, setAllUsers] = useState([]);
@@ -23,6 +23,7 @@ export default function Home() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [viewMode, setViewMode] = useState('grid');
   const [sortOrder, setSortOrder] = useState('recent');
+  const [menuOpen, setMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(
     () => document.documentElement.getAttribute('data-theme') === 'dark'
   );
@@ -31,6 +32,20 @@ export default function Home() {
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
   }, [isDark]);
+
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+      }
+    }
+
+    if (menuOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [menuOpen]);
 
   useEffect(() => {
     const q = query(collection(db, 'users'), orderBy('position'));
@@ -85,32 +100,53 @@ export default function Home() {
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
           </button>
-          <button className="home__signout-btn" onClick={signOut} aria-label="Sign out">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
-          </button>
-          <button className="home__theme-btn" onClick={() => setIsDark(d => !d)} aria-label="Toggle dark mode">
-            {isDark ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="5"/>
-                <line x1="12" y1="1" x2="12" y2="3"/>
-                <line x1="12" y1="21" x2="12" y2="23"/>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                <line x1="1" y1="12" x2="3" y2="12"/>
-                <line x1="21" y1="12" x2="23" y2="12"/>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-              </svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-              </svg>
+          <div className="home__menu-wrap">
+            <button
+              className="home__menu-btn"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-label="Open menu"
+              aria-expanded={menuOpen}
+              aria-controls="home-menu"
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+            {menuOpen && (
+              <div className="home__menu" id="home-menu" role="menu" aria-label="Main menu">
+                <button
+                  className="home__menu-item"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    onOpenTimeline();
+                  }}
+                  role="menuitem"
+                >
+                  View timeline
+                </button>
+                <button
+                  className="home__menu-item"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    setIsDark((value) => !value);
+                  }}
+                  role="menuitem"
+                >
+                  {isDark ? 'Light mode' : 'Dark mode'}
+                </button>
+                <button
+                  className="home__menu-item home__menu-item--danger"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    signOut();
+                  }}
+                  role="menuitem"
+                >
+                  Sign out
+                </button>
+              </div>
             )}
-          </button>
+          </div>
         </div>
       </header>
 
@@ -199,7 +235,7 @@ export default function Home() {
                   <p className="home__list-title">{item.title}</p>
                   <p className="home__list-meta">
                     {item.mediaType === 'movie' ? 'Movie' : 'TV'}
-                    {' · '}{item.addedBy}
+                    {' · Added by: '}{item.addedBy}
                   </p>
                 </div>
                 <span className={`home__list-status home__list-status--${item.status}`}>

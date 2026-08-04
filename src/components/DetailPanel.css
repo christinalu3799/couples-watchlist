@@ -160,6 +160,27 @@
   gap: 22px;
 }
 
+.detail__tabs {
+  display: flex;
+  gap: 8px;
+  padding: 14px 16px 0;
+}
+
+.detail__tab {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.detail__tab--active {
+  background: var(--accent);
+  color: white;
+}
+
 .detail__section {
   display: flex;
   flex-direction: column;
@@ -174,9 +195,62 @@
   color: var(--text-muted);
 }
 
+.detail__section-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+}
+
+.detail__section-toggle-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.detail__section-toggle-summary {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  text-align: right;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.detail__section-toggle-icon {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
 .detail__status-pills {
   display: flex;
   gap: 8px;
+}
+
+.detail__status-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detail__status-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail__status-person {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
 }
 
 .detail__status-pill {
@@ -241,6 +315,45 @@
   color: var(--text);
   min-width: 22px;
   text-align: center;
+}
+
+.detail__helper-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.detail__quick-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.detail__quick-action {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 7px 12px;
+}
+
+.detail__quick-action:active {
+  background: var(--surface);
+}
+
+.detail__current-progress {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .detail__stars {
@@ -375,6 +488,100 @@
 
 .detail__watch-date-input:focus {
   border-color: var(--accent);
+}
+
+.detail__watch-count-input {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 7px 10px;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.detail__watch-count-input:focus {
+  border-color: var(--accent);
+}
+
+.detail__watch-count-input::-webkit-inner-spin-button,
+.detail__watch-count-input::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+.detail__watch-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
+}
+
+.detail__watch-field-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.detail__session-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.detail__watch-checkbox--block {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.detail__session-log {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.detail__session-entry {
+  background: var(--surface-2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.detail__session-meta {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.detail__session-range-row {
+  margin: 1px 0 3px;
+}
+
+.detail__session-range-text {
+  display: inline;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.detail__session-text {
+  font-size: 0.86rem;
+  color: var(--text);
+  line-height: 1.5;
 }
 
 .detail__note-post {

@@ -24,7 +24,7 @@ export default function WatchlistCard({ item, onClick }) {
       </div>
       <div className="card__info">
         <p className="card__title">{item.title}</p>
-        <p className="card__added-by">{item.addedBy}</p>
+        <p className="card__added-by">Added by: {item.addedBy}</p>
         <span className={`card__status card__status--${item.status}`}>
           {STATUS_LABELS[item.status]}
         </span>

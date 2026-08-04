@@ -68,40 +68,6 @@
   -webkit-appearance: none;
 }
 
-.search-modal__added-by {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.search-modal__added-by-label {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.search-modal__person-pills {
-  display: flex;
-  gap: 6px;
-}
-
-.search-modal__person-pill {
-  font-size: 0.8rem;
-  padding: 5px 14px;
-  border-radius: 20px;
-  border: 1.5px solid var(--border);
-  color: var(--text-muted);
-  background: var(--surface);
-  transition: all 0.15s;
-}
-
-.search-modal__person-pill--active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: white;
-  font-weight: 600;
-}
-
 .search-modal__results {
   overflow-y: auto;
   flex: 1;

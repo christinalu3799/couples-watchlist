@@ -28,6 +28,8 @@ export default function SearchModal({ onClose, onAdd, name1, name2, existingIds 
       posterPath: result.poster_path ?? null,
       addedBy,
       status: 'want_to_watch',
+      status1: 'want_to_watch',
+      status2: 'want_to_watch',
       currentSeason: result.media_type === 'tv' ? 1 : null,
       currentEpisode: result.media_type === 'tv' ? 1 : null,
       rating: 0,
@@ -64,20 +66,6 @@ export default function SearchModal({ onClose, onAdd, name1, name2, existingIds 
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
-          </div>
-          <div className="search-modal__added-by">
-            <span className="search-modal__added-by-label">Adding for:</span>
-            <div className="search-modal__person-pills">
-              {[name1, name2].map((name) => (
-                <button
-                  key={name}
-                  className={`search-modal__person-pill ${addedBy === name ? 'search-modal__person-pill--active' : ''}`}
-                  onClick={() => setAddedBy(name)}
-                >
-                  {name}
-                </button>
-              ))}
-            </div>
           </div>
         </div>
 

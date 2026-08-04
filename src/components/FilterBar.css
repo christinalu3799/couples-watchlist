@@ -1,39 +1,72 @@
 .filterbar {
   background: var(--bg);
   border-bottom: 1px solid var(--border);
-  padding: 0 12px 10px;
+  padding: 10px 12px;
+  position: relative;
 }
 
-.filterbar__tabs {
+.filterbar__trigger {
+  width: 100%;
   display: flex;
-  gap: 2px;
-  padding: 10px 0 8px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
 }
 
-.filterbar__tab {
-  flex: 1;
-  padding: 7px 4px;
-  font-size: 0.8rem;
-  font-weight: 500;
+.filterbar__trigger-label {
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--text-muted);
-  border-radius: var(--radius-sm);
-  transition: color 0.15s, background 0.15s;
+}
+
+.filterbar__trigger-summary {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: right;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.filterbar__tab--active {
-  color: var(--accent-dark);
-  background: rgba(244, 160, 181, 0.15);
-  font-weight: 700;
-}
-
-.filterbar__pills {
+.filterbar__popover {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: calc(100% + 8px);
+  z-index: 20;
+  padding: 14px;
+  border-radius: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-panel);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12px;
 }
 
-.filterbar__pill-group {
+.filterbar__section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filterbar__section-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.filterbar__pill-row {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
@@ -41,12 +74,15 @@
 
 .filterbar__pill {
   font-size: 0.75rem;
-  padding: 4px 12px;
+  padding: 7px 12px;
   border-radius: 20px;
   border: 1.5px solid var(--border);
   color: var(--text-muted);
-  background: var(--surface);
-  transition: all 0.15s;
+  transition: color 0.15s, background 0.15s;
+}
+
+.filterbar__pill {
+  background: var(--surface-2);
 }
 
 .filterbar__pill--active {
