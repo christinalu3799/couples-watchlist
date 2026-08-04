@@ -63,6 +63,21 @@
   background: var(--surface-2);
 }
 
+.home__theme-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--text-muted);
+  transition: background 0.15s;
+}
+
+.home__theme-btn:active {
+  background: var(--surface-2);
+}
+
 .home__grid-wrapper {
   flex: 1;
   padding: 12px;
@@ -90,4 +105,118 @@
 .home__empty-icon {
   font-size: 2.8rem;
   margin-bottom: 4px;
+}
+
+.home__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px 0;
+}
+
+.home__toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.home__toolbar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted, #888);
+  transition: background 0.15s, color 0.15s;
+}
+
+.home__toolbar-btn--active {
+  background: var(--surface-2, #f0f0f0);
+  color: var(--text);
+}
+
+.home__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 8px;
+}
+
+.home__list-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px;
+  border-radius: 10px;
+  width: 100%;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.home__list-row:active {
+  background: var(--surface-2, #f0f0f0);
+}
+
+.home__list-poster {
+  width: 40px;
+  height: 60px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--surface-2, #f0f0f0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.home__list-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home__list-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.home__list-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home__list-meta {
+  font-size: 0.75rem;
+  color: var(--text-muted, #888);
+  margin-top: 2px;
+}
+
+.home__list-status {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.home__list-status--want_to_watch {
+  background: var(--surface-2, #f0f0f0);
+  color: var(--text-muted, #888);
+}
+
+.home__list-status--watching {
+  background: rgba(59, 130, 246, 0.12);
+  color: #3b82f6;
+}
+
+.home__list-status--watched {
+  background: rgba(34, 197, 94, 0.12);
+  color: #16a34a;
 }

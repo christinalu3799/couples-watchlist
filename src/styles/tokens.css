@@ -1,33 +1,59 @@
 :root {
-  --bg: #FDF8FF;
+  --bg: #FAF8F5;
   --surface: #FFFFFF;
-  --surface-2: #F8F2FF;
-  --accent: #E8A0C8;
-  --accent-dark: #C878A8;
-  --text: #2E2438;
-  --text-muted: #9E8EB0;
-  --border: #EDE4F5;
+  --surface-2: #F2EFE9;
+  --accent: #8B7355;
+  --accent-dark: #6B5540;
+  --text: #1C1917;
+  --text-muted: #78716C;
+  --border: #E7E2D8;
 
-  --tag-movie-bg: #FFDDF2;
-  --tag-movie-text: #A04878;
+  --tag-movie-bg: #FDEBD0;
+  --tag-movie-text: #924D1A;
   --tag-tv-bg: #D4EEFF;
-  --tag-tv-text: #3870A8;
+  --tag-tv-text: #2A6298;
 
-  --status-want-bg: #FFF0D4;
-  --status-want-text: #A07020;
+  --status-want-bg: #FFF3D4;
+  --status-want-text: #946010;
   --status-watching-bg: #D4F5EE;
-  --status-watching-text: #207A68;
-  --status-watched-bg: #E8D8FF;
-  --status-watched-text: #6840A8;
+  --status-watching-text: #1A7A68;
+  --status-watched-bg: #EAE4FF;
+  --status-watched-text: #5040A8;
 
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 24px;
 
-  --shadow-card: 0 2px 10px rgba(46, 36, 56, 0.07);
-  --shadow-panel: 0 -6px 40px rgba(46, 36, 56, 0.12);
+  --shadow-card: 0 2px 10px rgba(28, 25, 23, 0.07);
+  --shadow-panel: 0 -6px 40px rgba(28, 25, 23, 0.12);
 
   --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --app-max-width: 430px;
   --header-height: 56px;
+}
+
+[data-theme="dark"] {
+  --bg: #1C1917;
+  --surface: #28231F;
+  --surface-2: #332C27;
+  --accent: #C4A882;
+  --accent-dark: #A88A66;
+  --text: #FAF8F5;
+  --text-muted: #A8A29E;
+  --border: #3D3530;
+
+  --tag-movie-bg: #3D2010;
+  --tag-movie-text: #F4A060;
+  --tag-tv-bg: #0E2030;
+  --tag-tv-text: #60A8D8;
+
+  --status-want-bg: #3D2E00;
+  --status-want-text: #D4A030;
+  --status-watching-bg: #003028;
+  --status-watching-text: #40C8A8;
+  --status-watched-bg: #201840;
+  --status-watched-text: #9080E8;
+
+  --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.35);
+  --shadow-panel: 0 -6px 40px rgba(0, 0, 0, 0.5);
 }

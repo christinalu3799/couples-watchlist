@@ -22,15 +22,19 @@ const STATUSES = [
 
 export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, name2 }) {
   const { userProfile } = useAuth();
+  const myPosition = userProfile?.position ?? 1;
   const [status, setStatus] = useState(item.status);
   const [season, setSeason] = useState(item.currentSeason ?? 1);
   const [episode, setEpisode] = useState(item.currentEpisode ?? 1);
   const [rating1, setRating1] = useState(item.rating1 ?? 0);
   const [rating2, setRating2] = useState(item.rating2 ?? 0);
   const [notes, setNotes] = useState('');
-  const [notedBy, setNotedBy] = useState(userProfile?.displayName ?? name1);
-  const [watchedBy, setWatchedBy] = useState(userProfile?.displayName ?? name1);
   const [tmdbDetails, setTmdbDetails] = useState(null);
+
+  const myRating = myPosition === 1 ? rating1 : rating2;
+  const myName = myPosition === 1 ? name1 : name2;
+  const otherRating = myPosition === 1 ? rating2 : rating1;
+  const otherName = myPosition === 1 ? name2 : name1;
 
   useEffect(() => {
     getDetails(item.tmdbId, item.mediaType)
@@ -55,25 +59,25 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
     onUpdate({ currentEpisode: next });
   }
 
-  function handleRating1Change(value) {
-    const next = rating1 === value ? 0 : value;
-    setRating1(next);
-    onUpdate({ rating1: next });
-  }
-
-  function handleRating2Change(value) {
-    const next = rating2 === value ? 0 : value;
-    setRating2(next);
-    onUpdate({ rating2: next });
+  function handleMyRatingChange(value) {
+    if (myPosition === 1) {
+      const next = rating1 === value ? 0 : value;
+      setRating1(next);
+      onUpdate({ rating1: next });
+    } else {
+      const next = rating2 === value ? 0 : value;
+      setRating2(next);
+      onUpdate({ rating2: next });
+    }
   }
 
   function handleLogWatch() {
-    const entry = { by: watchedBy, at: new Date().toISOString() };
+    const entry = { by: userProfile?.displayName ?? myName, at: new Date().toISOString() };
     onUpdate({ watchLog: arrayUnion(entry) });
   }
 
   function handleNotesPost() {
-    const entry = { text: notes, by: notedBy, at: new Date().toISOString() };
+    const entry = { text: notes, by: userProfile?.displayName ?? myName, at: new Date().toISOString() };
     onUpdate({ noteLog: arrayUnion(entry) });
     setNotes('');
   }
@@ -180,13 +184,13 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
           <section className="detail__section">
             <p className="detail__section-label">Ratings</p>
             <div className="detail__rating-row">
-              <span className="detail__rating-name">{name1}</span>
+              <span className="detail__rating-name">{myName} <span className="detail__rating-you">(you)</span></span>
               <div className="detail__stars">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
-                    className={`detail__star ${rating1 >= star ? 'detail__star--active' : ''}`}
-                    onClick={() => handleRating1Change(star)}
+                    className={`detail__star ${myRating >= star ? 'detail__star--active' : ''}`}
+                    onClick={() => handleMyRatingChange(star)}
                     aria-label={`${star} star`}
                   >
                     ★
@@ -194,21 +198,21 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
                 ))}
               </div>
             </div>
-            <div className="detail__rating-row">
-              <span className="detail__rating-name">{name2}</span>
-              <div className="detail__stars">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    className={`detail__star ${rating2 >= star ? 'detail__star--active' : ''}`}
-                    onClick={() => handleRating2Change(star)}
-                    aria-label={`${star} star`}
-                  >
-                    ★
-                  </button>
-                ))}
+            {otherRating > 0 && (
+              <div className="detail__rating-row">
+                <span className="detail__rating-name">{otherName}</span>
+                <div className="detail__stars">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span
+                      key={star}
+                      className={`detail__star ${otherRating >= star ? 'detail__star--active' : ''}`}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </section>
 
           <section className="detail__section">
@@ -242,18 +246,6 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
               rows={3}
             />
             <div className="detail__note-footer">
-              <div className="detail__rated-by">
-                <span className="detail__rated-by-label">Comment by</span>
-                {[name1, name2].map((name) => (
-                  <button
-                    key={name}
-                    className={`detail__rated-by-pill ${notedBy === name ? 'detail__rated-by-pill--active' : ''}`}
-                    onClick={() => setNotedBy(name)}
-                  >
-                    {name}
-                  </button>
-                ))}
-              </div>
               <button
                 className="detail__note-post"
                 onClick={handleNotesPost}
@@ -286,17 +278,6 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
               <p className="detail__watch-empty">No watches logged yet</p>
             )}
             <div className="detail__watch-footer">
-              <div className="detail__rated-by">
-                {[name1, name2, 'Both 🎬'].map((name) => (
-                  <button
-                    key={name}
-                    className={`detail__rated-by-pill ${watchedBy === name ? 'detail__rated-by-pill--active' : ''}`}
-                    onClick={() => setWatchedBy(name)}
-                  >
-                    {name}
-                  </button>
-                ))}
-              </div>
               <button className="detail__note-post" onClick={handleLogWatch}>
                 Log watch
               </button>
