@@ -9,6 +9,10 @@ const STATUS_LABELS = {
 
 export default function WatchlistCard({ item, onClick }) {
   const posterUrl = getPosterUrl(item.posterPath);
+  const viewerPosition = Number(item.viewerPosition) === 2 ? 2 : 1;
+  const ratingValue = viewerPosition === 1
+    ? Number(item.rating1 ?? item.rating ?? 0)
+    : Number(item.rating2 ?? item.rating ?? 0);
 
   return (
     <button className="card" onClick={onClick}>
@@ -28,9 +32,9 @@ export default function WatchlistCard({ item, onClick }) {
         <span className={`card__status card__status--${item.status}`}>
           {STATUS_LABELS[item.status]}
         </span>
-        {item.rating > 0 && (
+        {ratingValue > 0 && (
           <p className="card__rating">
-            {'★'.repeat(item.rating)}{'☆'.repeat(5 - item.rating)}
+            {'★'.repeat(ratingValue)}{'☆'.repeat(5 - ratingValue)}
           </p>
         )}
       </div>

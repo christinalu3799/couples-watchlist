@@ -13,7 +13,7 @@ const FALLBACK_1 = import.meta.env.VITE_NAME_1;
 const FALLBACK_2 = import.meta.env.VITE_NAME_2;
 
 export default function Home({ onOpenTimeline }) {
-  const { signOut } = useAuth();
+  const { signOut, userProfile } = useAuth();
   const { items, loading, addItem, updateItem, deleteItem } = useWatchlist();
   const [allUsers, setAllUsers] = useState([]);
   const [statusFilter, setStatusFilter] = useState('all');
@@ -213,7 +213,10 @@ export default function Home({ onOpenTimeline }) {
             {filtered.map((item) => (
               <WatchlistCard
                 key={item.id}
-                item={item}
+                item={{
+                  ...item,
+                  viewerPosition: userProfile?.position ?? 1,
+                }}
                 onClick={() => setSelectedItem(item)}
               />
             ))}
