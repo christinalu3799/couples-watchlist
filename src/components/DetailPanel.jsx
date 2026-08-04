@@ -8,9 +8,7 @@ function formatDate(iso) {
   if (!iso) return '';
   const d = new Date(iso);
   return (
-    d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
-    ' at ' +
-    d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+    d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
   );
 }
 
@@ -29,6 +27,8 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
   const [rating1, setRating1] = useState(item.rating1 ?? 0);
   const [rating2, setRating2] = useState(item.rating2 ?? 0);
   const [notes, setNotes] = useState('');
+  const [watchDate, setWatchDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [watchedTogether, setWatchedTogether] = useState(false);
   const [tmdbDetails, setTmdbDetails] = useState(null);
 
   const myRating = myPosition === 1 ? rating1 : rating2;
@@ -72,7 +72,11 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
   }
 
   function handleLogWatch() {
-    const entry = { by: userProfile?.displayName ?? myName, at: new Date().toISOString() };
+    const watchedAt = watchDate ? new Date(`${watchDate}T12:00:00`) : new Date();
+    const entry = {
+      by: watchedTogether ? 'Both 🎬' : (userProfile?.displayName ?? myName),
+      at: watchedAt.toISOString(),
+    };
     onUpdate({ watchLog: arrayUnion(entry) });
   }
 
@@ -264,7 +268,7 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
                   <div key={i} className="detail__watch-entry">
                     <div>
                       <span className="detail__watch-by">{entry.by}</span>
-                      <span className="detail__watch-date">{formatDate(entry.at)}</span>
+                      <span className="detail__watch-date"> watched on {formatDate(entry.at)}</span>
                     </div>
                     <button
                       className="detail__watch-delete"
@@ -278,6 +282,23 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
               <p className="detail__watch-empty">No watches logged yet</p>
             )}
             <div className="detail__watch-footer">
+              <div className="detail__watch-controls">
+                <label className="detail__watch-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={watchedTogether}
+                    onChange={(e) => setWatchedTogether(e.target.checked)}
+                  />
+                  <span>Watched together</span>
+                </label>
+                <input
+                  className="detail__watch-date-input"
+                  type="date"
+                  value={watchDate}
+                  onChange={(e) => setWatchDate(e.target.value)}
+                  aria-label="Watch date"
+                />
+              </div>
               <button className="detail__note-post" onClick={handleLogWatch}>
                 Log watch
               </button>

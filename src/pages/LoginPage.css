@@ -71,9 +71,9 @@
 .login__name-input {
   padding: 0.75rem 1rem;
   border-radius: 12px;
-  border: 1.5px solid var(--color-border, #e0e0e0);
-  background: var(--color-surface, #fff);
-  color: var(--color-text);
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
   font-size: 1rem;
   outline: none;
   transition: border-color 0.15s;
@@ -82,15 +82,15 @@
 }
 
 .login__name-input:focus {
-  border-color: var(--color-accent, #e05252);
+  border-color: var(--accent);
 }
 
 .login__name-btn {
   padding: 0.75rem 1rem;
   border-radius: 12px;
   border: none;
-  background: var(--color-accent, #e05252);
-  color: #fff;
+  background: var(--accent);
+  color: var(--bg);
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;

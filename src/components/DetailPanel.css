@@ -356,6 +356,26 @@
   justify-content: space-between;
   gap: 8px;
 }
+.detail__watch-date-input {
+  flex: 1;
+  min-width: 0;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 7px 10px;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.detail__watch-date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.detail__watch-date-input:focus {
+  border-color: var(--accent);
+}
 
 .detail__note-post {
   align-self: flex-end;
@@ -438,10 +458,52 @@
 
 .detail__watch-footer {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
   gap: 8px;
   margin-top: 4px;
+}
+
+.detail__watch-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail__watch-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.detail__watch-checkbox input {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--accent);
+}
+
+.detail__watch-date-input {
+  flex: 1;
+  min-width: 0;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 7px 10px;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.detail__watch-date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.detail__watch-date-input:focus {
+  border-color: var(--accent);
 }
 
 .detail__delete {
