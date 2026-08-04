@@ -486,7 +486,6 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
                   <div className="detail__current-progress">
                     S{currentProgress.season}E{currentProgress.episode}
                   </div>
-                  <p className="detail__helper-text">This advances to the next unwatched episode after each log.</p>
                 </section>
               ) : (
                 <section className="detail__section">
@@ -553,7 +552,7 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
                     </button>
                   </div>
                   <div className="detail__session-form">
-                    <label className="detail__watch-field">
+                    <label className="detail__watch-field detail__watch-field--session-start">
                       <span className="detail__watch-field-label">Start season</span>
                       <input
                         className="detail__watch-count-input"
@@ -565,7 +564,7 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
                         aria-label="Start season"
                       />
                     </label>
-                    <label className="detail__watch-field">
+                    <label className="detail__watch-field detail__watch-field--session-start">
                       <span className="detail__watch-field-label">Start episode</span>
                       <input
                         className="detail__watch-count-input"
@@ -605,24 +604,26 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
                         </label>
                       </>
                     )}
-                    <label className="detail__watch-field">
-                      <span className="detail__watch-field-label">Watch date</span>
-                      <input
-                        className="detail__watch-date-input"
-                        type="date"
-                        value={watchDate}
-                        onChange={(e) => setWatchDate(e.target.value)}
-                        aria-label="Watch date"
-                      />
-                    </label>
-                    <label className="detail__watch-checkbox detail__watch-checkbox--block">
-                      <input
-                        type="checkbox"
-                        checked={watchedTogether}
-                        onChange={(e) => setWatchedTogether(e.target.checked)}
-                      />
-                      <span>Watched together</span>
-                    </label>
+                    <div className="detail__watch-inline-row">
+                      <label className="detail__watch-field detail__watch-field--date">
+                        <span className="detail__watch-field-label">Watch date</span>
+                        <input
+                          className="detail__watch-date-input"
+                          type="date"
+                          value={watchDate}
+                          onChange={(e) => setWatchDate(e.target.value)}
+                          aria-label="Watch date"
+                        />
+                      </label>
+                      <label className="detail__watch-checkbox detail__watch-checkbox--inline">
+                        <input
+                          type="checkbox"
+                          checked={watchedTogether}
+                          onChange={(e) => setWatchedTogether(e.target.checked)}
+                        />
+                        <span>Watched together</span>
+                      </label>
+                    </div>
                   </div>
                   <div className="detail__note-footer">
                     <button className="detail__note-post" onClick={handleLogWatch}>

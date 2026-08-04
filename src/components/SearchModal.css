@@ -63,6 +63,12 @@
   color: var(--text-muted);
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .search-modal__input {
+    font-size: 16px;
+  }
+}
+
 /* Remove the default "x" clear button on search input in WebKit */
 .search-modal__input::-webkit-search-cancel-button {
   -webkit-appearance: none;

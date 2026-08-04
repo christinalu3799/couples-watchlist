@@ -5,6 +5,7 @@
   z-index: 200;
   display: flex;
   align-items: flex-end;
+  animation: detailBackdropIn 180ms ease-out;
 }
 
 .detail__panel {
@@ -19,6 +20,36 @@
   position: relative;
   padding-bottom: env(safe-area-inset-bottom, 0);
   box-shadow: var(--shadow-panel);
+  animation: detailPanelUp 220ms ease-out;
+}
+
+@keyframes detailBackdropIn {
+  from {
+    background: rgba(42, 40, 37, 0);
+  }
+
+  to {
+    background: rgba(42, 40, 37, 0.4);
+  }
+}
+
+@keyframes detailPanelUp {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detail,
+  .detail__panel {
+    animation: none;
+  }
 }
 
 .detail__close {
@@ -468,6 +499,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  margin-top: 6px;
 }
 .detail__watch-date-input {
   flex: 1;
@@ -484,6 +516,14 @@
 .detail__watch-date-input::-webkit-calendar-picker-indicator {
   cursor: pointer;
   opacity: 0.75;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .detail__watch-date-input,
+  .detail__watch-count-input,
+  .detail__notes {
+    font-size: 16px;
+  }
 }
 
 .detail__watch-date-input:focus {
@@ -516,6 +556,31 @@
   gap: 6px;
   min-width: 0;
   flex: 1;
+}
+
+.detail__watch-field--session-start {
+  margin-top: 10px;
+}
+
+.detail__watch-field--date {
+  flex: 1 1 180px;
+}
+
+.detail__watch-inline-row {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.detail__watch-checkbox--inline {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 0 0 auto;
+  padding-bottom: 7px;
 }
 
 .detail__watch-field-label {
@@ -593,6 +658,7 @@
   background: var(--accent);
   color: white;
   transition: opacity 0.15s;
+  margin-top: 10px;
 }
 
 .detail__note-post:disabled {
