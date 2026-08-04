@@ -89,6 +89,15 @@ function getLatestLoggedSession(sessions) {
   })[0];
 }
 
+function normalizeName(value) {
+  return String(value || '').trim().toLowerCase();
+}
+
+function isSessionForNameSet(session, nameSet) {
+  if (!session || session.watchedTogether) return true;
+  return nameSet.has(normalizeName(session.watchedBy));
+}
+
 const STATUSES = [
   { value: 'want_to_watch', label: 'Want to Watch' },
   { value: 'watching', label: 'Watching' },
@@ -137,10 +146,27 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
       ? `Both ${STATUS_LABELS[myStatus] ?? 'Want to Watch'}`
       : `${myName}: ${STATUS_LABELS[myStatus] ?? 'Want to Watch'} · ${otherName}: ${STATUS_LABELS[otherStatus] ?? 'Want to Watch'}`;
 
+  const myNameSet = useMemo(() => {
+    return new Set([
+      normalizeName(myName),
+      normalizeName(userProfile?.displayName),
+    ].filter(Boolean));
+  }, [myName, userProfile?.displayName]);
+
+  const myTimelineSessions = useMemo(
+    () => showSessions.filter((session) => isSessionForNameSet(session, myNameSet)),
+    [showSessions, myNameSet]
+  );
+
+  const otherTimelineSessions = useMemo(
+    () => showSessions.filter((session) => session.watchedTogether || !isSessionForNameSet(session, myNameSet)),
+    [showSessions, myNameSet]
+  );
+
   const seasonEpisodeCounts = useMemo(() => getSeasonEpisodeMap(tmdbDetails), [tmdbDetails]);
 
   const currentProgress = useMemo(() => {
-    const latestSession = isTv ? getLatestLoggedSession(showSessions) : null;
+    const latestSession = isTv ? getLatestLoggedSession(myTimelineSessions) : null;
     if (!latestSession) {
       return { season: 1, episode: 1 };
     }
@@ -149,7 +175,7 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
     const watchedEpisode = Number(latestSession.stopEpisode ?? latestSession.endEpisode ?? 1);
 
     return getNextProgress(watchedSeason, watchedEpisode, seasonEpisodeCounts);
-  }, [isTv, showSessions, seasonEpisodeCounts]);
+  }, [isTv, myTimelineSessions, seasonEpisodeCounts]);
 
   useEffect(() => {
     getDetails(item.tmdbId, item.mediaType)
@@ -641,33 +667,78 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete, name1, 
                   ) : showSessions.length === 0 ? (
                     <p className="detail__watch-empty">No TV sessions logged yet</p>
                   ) : (
-                    <div className="detail__session-log">
-                      {showSessions.map((session) => {
-                        return (
-                          <div key={session.id} className="detail__session-entry">
-                            <div>
-                              <p className="detail__session-meta">
-                                {formatDate(session.watchedAt, false)} · {formatSessionSpan(session)}
-                              </p>
-                              <div className="detail__session-range-row">{renderSessionRange(session)}</div>
-                              <p className="detail__session-text">
-                                {session.watchedTogether ? 'Watched together' : session.watchedBy}
-                              </p>
-                            </div>
-                            <button
-                              className="detail__watch-delete"
-                              onClick={async () => {
-                                if (window.confirm('Delete this watch session?')) {
-                                  await deleteShowWatchSession(session.watchlistId, session.id);
-                                }
-                              }}
-                              aria-label="Delete watch session"
-                            >
-                              ×
-                            </button>
+                    <div className="detail__timeline-sections">
+                      <div className="detail__timeline-group">
+                        <p className="detail__timeline-group-title">{myName}</p>
+                        {myTimelineSessions.length === 0 ? (
+                          <p className="detail__watch-empty">No sessions yet</p>
+                        ) : (
+                          <div className="detail__session-log">
+                            {myTimelineSessions.map((session) => {
+                              return (
+                                <div key={`mine-${session.id}`} className="detail__session-entry">
+                                  <div>
+                                    <p className="detail__session-meta">
+                                      {formatDate(session.watchedAt, false)} · {formatSessionSpan(session)}
+                                    </p>
+                                    <div className="detail__session-range-row">{renderSessionRange(session)}</div>
+                                    <p className="detail__session-text">
+                                      {session.watchedTogether ? 'Watched together' : session.watchedBy}
+                                    </p>
+                                  </div>
+                                  <button
+                                    className="detail__watch-delete"
+                                    onClick={async () => {
+                                      if (window.confirm('Delete this watch session?')) {
+                                        await deleteShowWatchSession(session.watchlistId, session.id);
+                                      }
+                                    }}
+                                    aria-label="Delete watch session"
+                                  >
+                                    ×
+                                  </button>
+                                </div>
+                              );
+                            })}
                           </div>
-                        );
-                      })}
+                        )}
+                      </div>
+
+                      <div className="detail__timeline-group">
+                        <p className="detail__timeline-group-title">{otherName}</p>
+                        {otherTimelineSessions.length === 0 ? (
+                          <p className="detail__watch-empty">No sessions yet</p>
+                        ) : (
+                          <div className="detail__session-log">
+                            {otherTimelineSessions.map((session) => {
+                              return (
+                                <div key={`other-${session.id}`} className="detail__session-entry">
+                                  <div>
+                                    <p className="detail__session-meta">
+                                      {formatDate(session.watchedAt, false)} · {formatSessionSpan(session)}
+                                    </p>
+                                    <div className="detail__session-range-row">{renderSessionRange(session)}</div>
+                                    <p className="detail__session-text">
+                                      {session.watchedTogether ? 'Watched together' : session.watchedBy}
+                                    </p>
+                                  </div>
+                                  <button
+                                    className="detail__watch-delete"
+                                    onClick={async () => {
+                                      if (window.confirm('Delete this watch session?')) {
+                                        await deleteShowWatchSession(session.watchlistId, session.id);
+                                      }
+                                    }}
+                                    aria-label="Delete watch session"
+                                  >
+                                    ×
+                                  </button>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
                 </section>

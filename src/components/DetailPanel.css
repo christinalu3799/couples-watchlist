@@ -518,14 +518,6 @@
   opacity: 0.75;
 }
 
-@media (hover: none) and (pointer: coarse) {
-  .detail__watch-date-input,
-  .detail__watch-count-input,
-  .detail__notes {
-    font-size: 16px;
-  }
-}
-
 .detail__watch-date-input:focus {
   border-color: var(--accent);
 }
@@ -611,6 +603,26 @@
   gap: 8px;
   max-height: 220px;
   overflow-y: auto;
+}
+
+.detail__timeline-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.detail__timeline-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail__timeline-group-title {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .detail__session-entry {
@@ -800,4 +812,12 @@
 
 [data-theme="dark"] .detail__delete:active {
   background: rgba(201, 64, 64, 0.3);
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .detail__watch-date-input,
+  .detail__watch-count-input,
+  .detail__notes {
+    font-size: 16px;
+  }
 }
