@@ -111,3 +111,11 @@
   letter-spacing: 0.02em;
   margin-top: 1px;
 }
+
+.card__note {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-top: 2px;
+  font-style: italic;
+}

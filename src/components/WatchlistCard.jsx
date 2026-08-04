@@ -33,6 +33,9 @@ export default function WatchlistCard({ item, onClick }) {
             {'★'.repeat(item.rating)}{'☆'.repeat(5 - item.rating)}
           </p>
         )}
+        {item.notes && (
+          <p className="card__note">{item.notes.length > 60 ? item.notes.slice(0, 60) + '…' : item.notes}</p>
+        )}
       </div>
     </button>
   );

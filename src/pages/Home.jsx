@@ -27,12 +27,12 @@ export default function Home() {
   return (
     <div className="home">
       <header className="home__header">
-        <h1 className="home__title">🎬 Our Watchlist</h1>
+        <h1 className="home__title">Tristan and Christina's Watchlist ❤️</h1>
         <button
           className="home__search-btn"
           onClick={() => setSearchOpen(true)}
           aria-label="Search to add"
-        >
+        >a
           <svg
             width="22"
             height="22"

@@ -1,6 +1,19 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { getPosterUrl } from '../lib/tmdb';
 import './DetailPanel.css';
+
+const NAME_1 = import.meta.env.VITE_NAME_1;
+const NAME_2 = import.meta.env.VITE_NAME_2;
+
+function formatDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return (
+    d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
+    ' at ' +
+    d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  );
+}
 
 const STATUSES = [
   { value: 'want_to_watch', label: 'Want to Watch' },
@@ -12,9 +25,12 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete }) {
   const [status, setStatus] = useState(item.status);
   const [season, setSeason] = useState(item.currentSeason ?? 1);
   const [episode, setEpisode] = useState(item.currentEpisode ?? 1);
-  const [rating, setRating] = useState(item.rating ?? 0);
+  const [rating1, setRating1] = useState(item.rating1 ?? 0);
+  const [rating2, setRating2] = useState(item.rating2 ?? 0);
   const [notes, setNotes] = useState(item.notes ?? '');
-  const notesTimerRef = useRef(null);
+  const [savedNote, setSavedNote] = useState(item.notes ?? '');
+  const [notedBy, setNotedBy] = useState(item.notedBy ?? item.addedBy);
+  const [notePostedAt, setNotePostedAt] = useState(item.notePostedAt ?? null);
 
   function handleStatusChange(value) {
     setStatus(value);
@@ -33,19 +49,24 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete }) {
     onUpdate({ currentEpisode: next });
   }
 
-  function handleRatingChange(value) {
-    const next = rating === value ? 0 : value;
-    setRating(next);
-    onUpdate({ rating: next });
+  function handleRating1Change(value) {
+    const next = rating1 === value ? 0 : value;
+    setRating1(next);
+    onUpdate({ rating1: next });
   }
 
-  function handleNotesChange(e) {
-    const value = e.target.value;
-    setNotes(value);
-    clearTimeout(notesTimerRef.current);
-    notesTimerRef.current = setTimeout(() => {
-      onUpdate({ notes: value });
-    }, 600);
+  function handleRating2Change(value) {
+    const next = rating2 === value ? 0 : value;
+    setRating2(next);
+    onUpdate({ rating2: next });
+  }
+
+  function handleNotesPost() {
+    const ts = new Date().toISOString();
+    onUpdate({ notes, notePostedAt: ts, notedBy });
+    setSavedNote(notes);
+    setNotePostedAt(ts);
+    setNotes('');
   }
 
   const posterUrl = getPosterUrl(item.posterPath);
@@ -59,15 +80,7 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete }) {
     >
       <div className="detail__panel">
         <button className="detail__close" onClick={onClose} aria-label="Close">
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
@@ -129,33 +142,87 @@ export default function DetailPanel({ item, onClose, onUpdate, onDelete }) {
           )}
 
           <section className="detail__section">
-            <p className="detail__section-label">Rating</p>
-            <div className="detail__stars">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  className={`detail__star ${rating >= star ? 'detail__star--active' : ''}`}
-                  onClick={() => handleRatingChange(star)}
-                  aria-label={`${star} star`}
-                >
-                  ★
-                </button>
-              ))}
+            <p className="detail__section-label">Ratings</p>
+            <div className="detail__rating-row">
+              <span className="detail__rating-name">{NAME_1}</span>
+              <div className="detail__stars">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    className={`detail__star ${rating1 >= star ? 'detail__star--active' : ''}`}
+                    onClick={() => handleRating1Change(star)}
+                    aria-label={`${star} star`}
+                  >
+                    ★
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="detail__rating-row">
+              <span className="detail__rating-name">{NAME_2}</span>
+              <div className="detail__stars">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    className={`detail__star ${rating2 >= star ? 'detail__star--active' : ''}`}
+                    onClick={() => handleRating2Change(star)}
+                    aria-label={`${star} star`}
+                  >
+                    ★
+                  </button>
+                ))}
+              </div>
             </div>
           </section>
 
           <section className="detail__section">
             <p className="detail__section-label">Notes</p>
+            {savedNote ? (
+              <div className="detail__note-saved">
+                {notePostedAt && (
+                  <p className="detail__note-meta">{item.notedBy ?? notedBy} · {formatDate(notePostedAt)}</p>
+                )}
+                <p className="detail__note-text">{savedNote}</p>
+              </div>
+            ) : null}
             <textarea
               className="detail__notes"
               placeholder="Add a note..."
               value={notes}
-              onChange={handleNotesChange}
+              onChange={(e) => setNotes(e.target.value)}
               rows={3}
             />
+            <div className="detail__note-footer">
+              <div className="detail__rated-by">
+                <span className="detail__rated-by-label">Note by</span>
+                {[NAME_1, NAME_2].map((name) => (
+                  <button
+                    key={name}
+                    className={`detail__rated-by-pill ${notedBy === name ? 'detail__rated-by-pill--active' : ''}`}
+                    onClick={() => setNotedBy(name)}
+                  >
+                    {name}
+                  </button>
+                ))}
+              </div>
+              <button
+                className="detail__note-post"
+                onClick={handleNotesPost}
+                disabled={notes === savedNote && notedBy === item.notedBy}
+              >
+                {savedNote ? 'Update' : 'Post'}
+              </button>
+            </div>
           </section>
 
-          <button className="detail__delete" onClick={onDelete}>
+          <button
+            className="detail__delete"
+            onClick={() => {
+              if (window.confirm(`Remove "${item.title}" from your watchlist?`)) {
+                onDelete();
+              }
+            }}
+          >
             Remove from watchlist
           </button>
         </div>
