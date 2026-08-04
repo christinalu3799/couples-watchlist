@@ -1,0 +1,113 @@
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  text-align: left;
+  width: 100%;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.card:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+.card__poster {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card__no-poster {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+.card__type-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+.card__type-badge--movie {
+  background: var(--tag-movie-bg);
+  color: var(--tag-movie-text);
+}
+
+.card__type-badge--tv {
+  background: var(--tag-tv-bg);
+  color: var(--tag-tv-text);
+}
+
+.card__info {
+  padding: 8px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.card__title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card__added-by {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.card__status {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 20px;
+  margin-top: 2px;
+  width: fit-content;
+}
+
+.card__status--want_to_watch {
+  background: var(--status-want-bg);
+  color: var(--status-want-text);
+}
+
+.card__status--watching {
+  background: var(--status-watching-bg);
+  color: var(--status-watching-text);
+}
+
+.card__status--watched {
+  background: var(--status-watched-bg);
+  color: var(--status-watched-text);
+}
+
+.card__rating {
+  font-size: 0.7rem;
+  color: var(--accent-dark);
+  letter-spacing: 0.02em;
+  margin-top: 1px;
+}

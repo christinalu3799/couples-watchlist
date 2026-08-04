@@ -1,0 +1,57 @@
+.filterbar {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0 12px 10px;
+}
+
+.filterbar__tabs {
+  display: flex;
+  gap: 2px;
+  padding: 10px 0 8px;
+}
+
+.filterbar__tab {
+  flex: 1;
+  padding: 7px 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.filterbar__tab--active {
+  color: var(--accent-dark);
+  background: rgba(244, 160, 181, 0.15);
+  font-weight: 700;
+}
+
+.filterbar__pills {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filterbar__pill-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filterbar__pill {
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
+  background: var(--surface);
+  transition: all 0.15s;
+}
+
+.filterbar__pill--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+  font-weight: 600;
+}
